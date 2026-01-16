@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sobre Nosotros - Cuadrado SA</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Roboto:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* MISMOS COLORES QUE TU TIENDA */
+            --primary: #d35400;
+            --secondary: #2c3e50;
+            --text-main: #333;
+            --light-bg: #f4f6f8;
+            --white: #ffffff;
+
+            /* ========================================= */
+            /* 📸 IMAGEN DE FONDO (TU LINK ORIGINAL) */
+            /* ========================================= */
+            --hero-bg-image: url('https://lh3.googleusercontent.com/proxy/0R3eR2pZWRYrEO1N-HBkkU24Mhbfe0-bLqkb1orSri2y6uOlNhNM6xC4EMyP02skXcTmU8O1mATuD3eY0KNS-IRUzjymqggtjk72tRXMbS96-KLdHZRhkYq9X1zAKMGeqKOqKmRZgqQ6KQPwmlL4WBj8hLB8qObMk0X-LA=s680-w680-h510-rw');
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        /* --- BARRA DE NAVEGACIÓN (STICKY) --- */
+        nav {
+            background-color: var(--secondary);
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* LOGO GRANDE FLOTANTE (70px) */
+        .logo-img {
+            height: 70px;
+            /* TAMAÑO SOLICITADO */
+            width: auto;
+            object-fit: contain;
+            display: block;
+
+            /* EL TRUCO PARA QUE NO AGRANDE LA BARRA */
+            margin-top: -15px;
+            margin-bottom: -15px;
+            position: relative;
+            z-index: 100;
+        }
+
+        /* BOTÓN VOLVER */
+        .btn-back {
+            background-color: transparent;
+            color: white;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 60vh;
+            background-image: linear-gradient(rgba(44, 62, 80, 0.7), rgba(44, 62, 80, 0.7)), var(--hero-bg-image);
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            border-bottom: 4px solid var(--primary);
+            display: inline-block;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            font-weight: 300;
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* SECCIÓN HISTORIA */
+        .history-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .history-section h2 {
+            color: var(--secondary);
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        /* SECCIÓN VALORES (GRID) */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .value-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .value-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        /* SECCIÓN CONTACTO / MAPA */
+        .contact-section {
+            background: var(--secondary);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .contact-section h2 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .contact-section p {
+            margin: 5px 0;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 300px;
+            background: #ccc;
+            margin-top: 20px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero {
+                height: 50vh;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .btn-back span {
+                display: none;
+            }
+
+            .btn-back::after {
+                content: "Volver";
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <img src="assets/logo.png" alt="Cuadrado SA" class="logo-img">
+        <a href="index.html" class="btn-back">
+            ⬅ <span>Volver a la Tienda</span>
+        </a>
+    </nav>
+
+    <header class="hero">
+        <h1>Trayectoria y Calidad</h1>
+        <p>Más de 40 años brindando soluciones a la industria y al hogar en Salta.</p>
+    </header>
+
+    <div class="container">
+
+        <section class="history-section">
+            <h2>Nuestra Historia</h2>
+            <p>
+                <strong>Ferretería Cuadrado SA</strong> Somos Ferretería Hermanos Cuadrado, empresa con 40 años de
+                trayectoria en Salta, donde nos hemos establecido como una ferretería de tradición y confianza. Nuestra
+                experiencia respalda la asesoría que ofrecemos a cada uno de nuestros clientes, quienes nos recomiendan
+                por la satisfacción y calidad que encuentran con nosotros.
+            </p>
+            <p>
+                Nos especializamos en brindar asesoramiento técnico real. No solo vendemos herramientas; ofrecemos
+                soluciones. Trabajamos con las marcas líderes del mercado y defendemos con orgullo a la industria
+                nacional, garantizando repuestos y durabilidad.
+            </p>
+        </section>
+
+        <div class="values-grid">
+            <div class="value-card">
+                <span class="icon">🔧</span>
+                <h3>Asesoramiento Técnico</h3>
+                <p>Nuestro equipo sabe lo que vende. Te ayudamos a elegir la herramienta exacta para tu trabajo, ni más
+                    ni menos.</p>
+            </div>
+            <div class="value-card">
+                <span class="icon">🇦🇷</span>
+                <h3>Industria Nacional</h3>
+                <p>Apostamos por marcas argentinas con respaldo, repuestos asegurados y garantía oficial.</p>
+            </div>
+            <div class="value-card">
+                <span class="icon">📦</span>
+                <h3>Stock Permanente</h3>
+                <p>Contamos con un amplio depósito para abastecer desde el hobbista hasta grandes obras.</p>
+            </div>
+        </div>
+
+        <section class="contact-section">
+            <h2>Visitanos</h2>
+            <p>📍 Carlos Pellegrini 742 (4400) - Provinai de Salta</p>
+            <p>📞 Tel: (0387) 423-6713 | 📱 WhatsApp: +54 9 387 549-7983</p>
+            <p>mail: cuadradohnos@live.com.ar</p>
+            <p>🕒 Horarios: Lun a Vie 8:30 - 13:00 / 16:00 - 19:00 </p>
+
+            <div class="map-container">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d226.3689523934108!2d-65.4162131299132!3d-24.79876665386613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x941bc3a62a40d961%3A0xe8f00ffedb3a7a43!2sCuadrado%20Hermanos%20SA!5e0!3m2!1ses-419!2sar!4v1768564656781!5m2!1ses-419!2sar"
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+                </iframe>
+            </div>
+        </section>
+
+    </div>
+
+    <div style="text-align: center; padding: 20px; color: #777; font-size: 0.9rem;">
+        © 2026 Cuadrado SA. Todos los derechos reservados.
+    </div>
+
+</body>
+
+</html>
