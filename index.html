@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ferretería Online</title>
-
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Roboto:wght@300;400;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2c3e50">
 
     <style>
         :root {
-            --primary: #d35400;
-            --secondary: #2c3e50;
-            --mp-blue: #009ee3;
+            --primary: #d35400;  
+            --secondary: #2c3e50; 
+            --mp-color: #009ee3;   
             --wa-green: #25d366;
             --alert-orange: #e67e22;
+            --offer-red: #e74c3c;
             --bg-color: #f4f6f8;
             --card-bg: #ffffff;
             --text-main: #333;
@@ -26,533 +27,151 @@
             --font-body: 'Roboto', sans-serif;
         }
 
-        body {
-            margin: 0;
-            font-family: var(--font-body);
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding-bottom: 80px;
-            -webkit-tap-highlight-color: transparent;
+        body { margin: 0; font-family: var(--font-body); background-color: var(--bg-color); color: var(--text-main); padding-bottom: 80px; -webkit-tap-highlight-color: transparent; }
+        nav { background: var(--secondary); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); padding: 5px 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 15px; display: flex; flex-direction: column; }
+        .nav-top-row { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+        
+        .logo-img { height: 100px; width: auto; object-fit: contain; cursor: pointer; display: block; margin-top: -10px; margin-bottom: -20px; position: relative; z-index: 1100; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+        
+        .btn-cat-toggle { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 12px; border-radius: 6px; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+
+        .menu-wrapper { display: none; width: 100%; background: rgba(0,0,0,0.2); border-radius: 8px; margin-bottom: 10px; padding: 10px; box-sizing: border-box; }
+        .menu-wrapper.open { display: block; animation: slideDown 0.3s ease-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .menu { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+        .menu a { text-decoration: none; color: #ecf0f1; font-size: 0.9rem; font-weight: 500; padding: 12px; border-radius: 4px; background: rgba(255,255,255,0.05); text-transform: uppercase; cursor: pointer; border: 1px solid transparent; text-align: center; display: block; }
+        .menu a.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .menu a.btn-ofertas { background-color: var(--offer-red); color: white; font-weight: bold; box-shadow: 0 0 10px rgba(231, 76, 60, 0.4); }
+
+        .search-dock { display: flex; align-items: center; background: white; border-radius: 4px; padding: 8px 10px; margin-bottom: 10px; border: 1px solid #ddd; }
+        .search-dock input { background: transparent; border: none; color: #333; width: 100%; font-size: 1rem; margin-left: 5px; outline: none; }
+        .btn-about { display: block; background: #34495e; color: #bdc3c7; }
+
+        @media (min-width: 900px) {
+            .nav-container { flex-direction: row; align-items: center; height: 80px; padding: 0 20px; }
+            .nav-top-row { width: auto; height: auto; }
+            .btn-cat-toggle { display: none; }
+            .menu-wrapper { display: flex !important; width: auto; background: transparent; padding: 0; margin: 0; flex-grow: 1; justify-content: flex-start; margin-left: 40px; }
+            .menu { flex-direction: row; width: auto; align-items: center; }
+            .menu a { padding: 8px 15px; font-size: 0.85rem; background: rgba(255,255,255,0.1); width: auto; }
+            .menu a:hover { background: var(--primary); }
+            .search-dock { margin: 0 10px 0 0; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white; width: 200px;}
+            .search-dock input { color: white; }
+            .search-dock input::placeholder { color: #bdc3c7; }
+            .btn-about { margin-left: auto !important; background: transparent; border: 1px solid rgba(255,255,255,0.3); }
         }
 
-        /* HEADER RESPONSIVE */
-        nav {
-            background: var(--secondary);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 10px 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        /* ESTILO BOMBA */
+        .bomba-badge {
+            background: #e74c3c; color: white; padding: 5px; font-weight: bold;
+            text-align: center; font-size: 0.8rem; border-radius: 4px;
+            margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 5px;
+            animation: pulse 1.5s infinite;
         }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        .timer-text { font-family: monospace; font-size: 1rem; }
 
-        /* TOP ROW */
-        .nav-top-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-        }
+        .slider-container { width: 100%; max-width: 1200px; margin: 10px auto 20px auto; border-radius: 8px; overflow: hidden; position: relative; background: #ddd; aspect-ratio: 16/7; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none; }
+        .slider-track { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
+        .slider-slide { min-width: 100%; height: 100%; }
+        .slider-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .slider-dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; }
+        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; }
+        .dot.active { background: white; transform: scale(1.2); }
 
-        /* LOGO GRANDE (70px) CON MARGEN NEGATIVO */
-        .logo-img {
-            height: 70px;
-            /* TAMAÑO SOLICITADO */
-            width: auto;
-            object-fit: contain;
-            cursor: pointer;
-            display: block;
+        .hero { background: white; padding: 20px; border-radius: 4px; margin-bottom: 20px; border-left: 5px solid var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .hero h1 { font-family: var(--font-title); margin: 0; font-size: 1.8rem; color: var(--secondary); text-transform: uppercase;}
+        .hero p { color: #7f8c8d; margin-top: 5px; font-size: 0.9rem; }
 
-            /* TRUCO PARA MANTENER LA BARRA FINA */
-            margin-top: -15px;
-            margin-bottom: -15px;
-            position: relative;
-            z-index: 100;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
 
-        .btn-about {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #ecf0f1;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            white-space: nowrap;
-            transition: all 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            display: inline-flex;
-            align-items: center;
-            cursor: pointer;
-            margin-left: 15px;
-        }
+        .card { background: var(--card-bg); border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; position: relative; }
+        .card-img-container { width: 100%; aspect-ratio: 1/1; background: white; border-bottom: 1px solid #eee; position: relative;}
+        .card img { width: 100%; height: 100%; object-fit: contain; padding: 10px; box-sizing: border-box; }
+        .card-info { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-cat { font-size: 0.65rem; color: #95a5a6; text-transform: uppercase; font-weight: bold; margin-bottom: 4px;}
+        .card h3 { margin: 0 0 8px 0; font-size: 0.95rem; color: var(--text-main); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.6em; }
 
-        .btn-about:hover {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
+        .price-box { margin-top: auto; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; min-height: 25px;}
+        .price { font-size: 1.1rem; font-weight: bold; color: var(--primary); font-family: var(--font-title); }
+        .price-old { font-size: 0.8rem; text-decoration: line-through; color: #bdc3c7; }
+        .stock-alert { color: #3498db; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; display: inline-block; }
+        .stock-alert.encargo { color: var(--alert-orange); }
 
-        /* MENU Y BUSCADOR */
-        .menu-wrapper {
-            overflow-x: auto;
-            width: 100%;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 5px;
-            scrollbar-width: none;
-        }
+        .btn-add { margin-top: 10px; width: 100%; background: var(--secondary); color: white; border: none; padding: 8px; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; border-radius: 4px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-consultar { background-color: #3498db; }
 
-        .menu-wrapper::-webkit-scrollbar {
-            display: none;
-        }
+        #cart-counter { position: fixed; bottom: 15px; right: 15px; background: var(--primary); color: white; padding: 12px 20px; border-radius: 30px; cursor: pointer; z-index: 900; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-weight: bold; display: flex; align-items: center; gap: 8px; font-family: var(--font-title); letter-spacing: 1px; font-size: 0.9rem; }
+        
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-box { background: white; width: 95%; max-width: 500px; padding: 20px; border-radius: 4px; position: relative; max-height: 85vh; display: flex; flex-direction: column; border-top: 5px solid var(--primary); }
+        .modal-box.detail-box { padding: 0; overflow: hidden; background: #fff; max-width: 900px; }
+        .detail-layout { display: flex; flex-direction: column; height: 100%; max-height: 85vh; }
+        .detail-img-area { width: 100%; height: 250px; background: #f9f9f9; position: relative; border-bottom: 1px solid #eee; flex-shrink: 0; }
+        .detail-info-area { padding: 20px; overflow-y: auto; }
 
-        .menu {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            width: max-content;
-        }
-
-        .menu a {
-            text-decoration: none;
-            color: #ecf0f1;
-            font-size: 0.85rem;
-            font-weight: 500;
-            padding: 8px 15px;
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            white-space: nowrap;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            cursor: pointer;
-            border: 1px solid transparent;
-        }
-
-        .menu a.active,
-        .menu a:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .search-dock {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-            padding: 5px 10px;
-            margin-right: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            min-width: 140px;
-            flex-shrink: 0;
-        }
-
-        .search-dock input {
-            background: transparent;
-            border: none;
-            color: white;
-            font-family: var(--font-body);
-            width: 100%;
-            font-size: 0.9rem;
-            margin-left: 5px;
-        }
-
-        .search-dock input:focus {
-            outline: none;
-        }
-
-        .search-dock input::placeholder {
-            color: #bdc3c7;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px;
-        }
-
-        .hero {
-            background: white;
-            padding: 20px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            border-left: 5px solid var(--primary);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .hero h1 {
-            font-family: var(--font-title);
-            margin: 0;
-            font-size: 1.8rem;
-            color: var(--secondary);
-            text-transform: uppercase;
-        }
-
-        .hero p {
-            color: #7f8c8d;
-            margin-top: 5px;
-            font-size: 0.9rem;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-            gap: 12px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s;
-            position: relative;
-        }
-
-        .card-img-container {
-            width: 100%;
-            aspect-ratio: 1/1;
-            background: white;
-            border-bottom: 1px solid #eee;
-            position: relative;
-        }
-
-        .card img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        .card-info {
-            padding: 10px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-cat {
-            font-size: 0.65rem;
-            color: #95a5a6;
-            text-transform: uppercase;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .card h3 {
-            margin: 0 0 8px 0;
-            font-size: 0.95rem;
-            color: var(--text-main);
-            line-height: 1.3;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            height: 2.6em;
-        }
-
-        .price-box {
-            margin-top: auto;
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-            flex-wrap: wrap;
-            min-height: 25px;
-        }
-
-        .price {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--primary);
-            font-family: var(--font-title);
-        }
-
-        .price-old {
-            font-size: 0.8rem;
-            text-decoration: line-through;
-            color: #bdc3c7;
-        }
-
-        .stock-alert {
-            color: var(--alert-orange);
-            font-weight: bold;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            border: 1px solid var(--alert-orange);
-            padding: 2px 5px;
-            border-radius: 3px;
-            display: inline-block;
-        }
-
-        .btn-add {
-            margin-top: 10px;
-            width: 100%;
-            background: var(--secondary);
-            color: white;
-            border: none;
-            padding: 8px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-encargo {
-            background-color: var(--wa-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        #cart-counter {
-            position: fixed;
-            bottom: 15px;
-            right: 15px;
-            background: var(--primary);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            z-index: 900;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--font-title);
-            letter-spacing: 1px;
-            font-size: 0.9rem;
-        }
-
-        /* MODALES */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-box {
-            background: white;
-            width: 95%;
-            max-width: 500px;
-            padding: 20px;
-            border-radius: 4px;
-            position: relative;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            border-top: 5px solid var(--primary);
-        }
-
-        .modal-box.detail-box {
-            padding: 0;
-            overflow: hidden;
-            background: #fff;
-            max-width: 900px;
-        }
-
-        .detail-layout {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            max-height: 85vh;
-        }
-
-        .detail-img-area {
-            width: 100%;
-            height: 250px;
-            background: #f9f9f9;
-            position: relative;
-            border-bottom: 1px solid #eee;
-            flex-shrink: 0;
-        }
-
-        .detail-info-area {
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .tech-specs-container {
-            margin: 15px 0;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .specs-header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 6px 12px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-family: var(--font-title);
-        }
-
-        .specs-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-        }
-
-        .specs-table tr {
-            border-bottom: 1px solid #eee;
-        }
-
-        .specs-table td {
-            padding: 8px 12px;
-        }
-
-        .specs-table td.label {
-            font-weight: bold;
-            color: #555;
-            background-color: #f9f9f9;
-            width: 35%;
-        }
-
-        .payment-options {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn-pay {
-            width: 100%;
-            border: none;
-            padding: 15px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 1rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            color: white;
-        }
-
-        .btn-whatsapp {
-            background: var(--wa-green);
-        }
-
-        .btn-mercadopago {
-            background: var(--mp-blue);
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            align-items: center;
-        }
+        .tech-specs-container { margin: 15px 0; border: 1px solid #e0e0e0; border-radius: 4px; overflow: hidden; }
+        .specs-header { background-color: #2c3e50; color: white; padding: 6px 12px; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; font-family: var(--font-title); }
+        .specs-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .specs-table tr { border-bottom: 1px solid #eee; }
+        .specs-table td { padding: 8px 12px; }
+        .specs-table td.label { font-weight: bold; color: #555; background-color: #f9f9f9; width: 35%; }
+        .payment-options { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .btn-pay { width: 100%; border: none; padding: 15px; border-radius: 4px; font-weight: bold; font-size: 1rem; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; color: white; }
+        .btn-whatsapp { background: var(--wa-green); }
+        .cart-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center; }
 
         @media (min-width: 768px) {
-            .nav-container {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                padding: 15px 20px;
-            }
-
-            .nav-top-row {
-                width: auto;
-                justify-content: flex-start;
-            }
-
-            .menu-wrapper {
-                width: auto;
-            }
-
-            .detail-layout {
-                flex-direction: row;
-                height: auto;
-                max-height: 80vh;
-            }
-
-            .detail-img-area {
-                width: 50%;
-                height: auto;
-                border-bottom: none;
-                border-right: 1px solid #ddd;
-            }
-
-            .detail-info-area {
-                width: 50%;
-            }
-
-            .grid {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-                gap: 20px;
-            }
-
-            .logo-img {
-                height: 70px;
-                margin-top: -15px;
-                margin-bottom: -15px;
-            }
-
-            /* Mantiene el logo grande en PC */
+            .detail-layout { flex-direction: row; height: auto; max-height: 80vh; }
+            .detail-img-area { width: 50%; height: auto; border-bottom: none; border-right: 1px solid #ddd; }
+            .detail-info-area { width: 50%; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+            .slider-container { aspect-ratio: 16/5; }
         }
     </style>
 </head>
-
 <body>
 
     <nav>
         <div class="nav-container">
             <div class="nav-top-row">
                 <img src="assets/logo.png" onclick="location.reload()" alt="Logo" class="logo-img" id="logo-header">
-                <a href="sobrenosotros.html" class="btn-about">Sobre nosotros</a>
+                <button class="btn-cat-toggle" onclick="toggleMobileMenu()">☰ Categorías</button>
             </div>
-
-            <div class="menu-wrapper">
+            <div class="menu-wrapper" id="menu-wrapper">
                 <div class="menu">
                     <div class="search-dock">
-                        <span style="font-size:0.9rem; color: #ecf0f1;">🔍</span>
+                        <span style="font-size:0.9rem;">🔍</span>
                         <input type="text" id="buscador-tienda" placeholder="Buscar..." onkeyup="buscarProducto()">
                     </div>
                     <a onclick="filtrar('todos', this)" class="active">Todo</a>
+                    <a onclick="filtrar('ofertas', this)" class="btn-ofertas">🔥 Ofertas</a>
                     <a onclick="filtrar('herramientas-electricas', this)">Eléctricas</a>
                     <a onclick="filtrar('herramientas-manuales', this)">Manuales</a>
                     <a onclick="filtrar('insumos', this)">Insumos</a>
                     <a onclick="filtrar('accesorios', this)">Accesorios</a>
+                    <a href="sobrenosotros.html" class="btn-about">Sobre Nosotros</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <div class="hero">
+        <div id="slider-container" class="slider-container">
+            <div id="slider-track" class="slider-track"></div>
+            <div id="slider-dots" class="slider-dots"></div>
+        </div>
+
+        <div id="hero-static" class="hero">
             <h1 id="titulo-seccion">Catálogo General</h1>
             <p id="subtitulo-seccion">Herramientas profesionales y soluciones integrales.</p>
         </div>
-
+        
         <div id="loading" style="text-align: center; padding: 40px; color: #666;">Cargando catálogo...</div>
-
         <div class="grid" id="contenedor-productos"></div>
     </div>
 
@@ -562,16 +181,15 @@
 
     <div id="cart-modal" class="modal-overlay" onclick="closeModal(event, 'cart-modal')">
         <div class="modal-box">
-            <button onclick="toggleCart()"
-                style="position:absolute; right:15px; top:10px; border:none; background:none; font-size:1.5rem; cursor:pointer;">×</button>
-            <h2 style="font-family: var(--font-title); margin-top:0;">Mi Pedido</h2>
+            <button onclick="toggleCart()" style="position:absolute; right:15px; top:10px; border:none; background:none; font-size:1.5rem; cursor:pointer;">×</button>
+            <h2 style="font-family: var(--font-title); margin-top:0;">Mi Pedido / Cotización</h2>
             <div id="cart-items" style="flex-grow: 1; overflow-y: auto; max-height: 300px;"></div>
-            <div
-                style="margin-top: 15px; font-size: 1.3rem; text-align: right; padding-top:10px; border-top: 1px solid #eee;">
-                Total: <strong style="color:var(--primary)">$<span id="cart-total">0</span></strong>
+            <div style="margin-top: 15px; font-size: 1.1rem; text-align: right; padding-top:10px; border-top: 1px solid #eee;">
+                Total Estimado: <strong style="color:var(--primary)">$<span id="cart-total">0</span></strong>
+                <div id="quote-note" style="font-size:0.8rem; color:#666; display:none;">(+ Productos a cotizar)</div>
             </div>
             <div class="payment-options">
-                <button class="btn-pay btn-whatsapp" onclick="enviarWhatsApp()"><span>📱</span> WhatsApp</button>
+                <button class="btn-pay btn-whatsapp" onclick="enviarWhatsApp()"><span>📱</span> Enviar Pedido / Consulta</button>
             </div>
         </div>
     </div>
@@ -581,23 +199,14 @@
             <div class="detail-layout">
                 <div class="detail-img-area">
                     <img id="detail-img" src="" style="width:100%; height:100%; object-fit:contain;">
-                    <button onclick="cerrarDetalle()"
-                        style="position:absolute; right:10px; top:10px; background:rgba(0,0,0,0.5); color:white; border:none; width:35px; height:35px; border-radius:50%; cursor:pointer; font-size:1.2rem;">×</button>
+                    <button onclick="cerrarDetalle()" style="position:absolute; right:10px; top:10px; background:rgba(0,0,0,0.5); color:white; border:none; width:35px; height:35px; border-radius:50%; cursor:pointer; font-size:1.2rem;">×</button>
                 </div>
-
                 <div class="detail-info-area">
-                    <span id="detail-category"
-                        style="color: var(--primary); font-weight: bold; font-size: 0.8rem; text-transform: uppercase;"></span>
-                    <h2 id="detail-title"
-                        style="font-family: var(--font-title); margin: 5px 0 10px 0; font-size: 1.6rem; line-height: 1.1;">
-                    </h2>
+                    <span id="detail-category" style="color: var(--primary); font-weight: bold; font-size: 0.8rem; text-transform: uppercase;"></span>
+                    <h2 id="detail-title" style="font-family: var(--font-title); margin: 5px 0 10px 0; font-size: 1.6rem; line-height: 1.1;"></h2>
                     <div id="detail-price-box" style="margin-bottom: 15px;"></div>
-
                     <div id="detail-specs-container"></div>
-                    <p id="detail-desc"
-                        style="color: #555; line-height: 1.6; font-size: 0.9rem; margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 15px;">
-                    </p>
-
+                    <p id="detail-desc" style="color: #555; line-height: 1.6; font-size: 0.9rem; margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 15px;"></p>
                     <div id="detail-action-container"></div>
                 </div>
             </div>
@@ -606,12 +215,12 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const URL_LOGO = "assets/logo.png";
+        const URL_LOGO = "assets/logo.png"; 
         const logoImg = document.getElementById('logo-header');
         logoImg.src = URL_LOGO;
-        logoImg.onerror = function () { this.style.display = 'none'; };
+        logoImg.onerror = function() { this.style.display = 'none'; };
 
         const firebaseConfig = {
             apiKey: "AIzaSyD40Xwlk8P13H_InEHR52yaFogd3_ExsNk",
@@ -624,25 +233,93 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
-        // TELÉFONO PARA PEDIDOS
-        const WHATSAPP_NUMBER = "5493875497983";
+        const WHATSAPP_NUMBER = "5493875497983"; 
 
         let inventario = [];
-        let carrito = JSON.parse(localStorage.getItem('carrito_cuadrado')) || [];
+        let carrito = JSON.parse(localStorage.getItem('carrito_cuadrado')) || []; 
 
-        window.filtrar = function (cat, btn) {
+        window.toggleMobileMenu = () => { document.getElementById('menu-wrapper').classList.toggle('open'); };
+
+        async function cargarPublicidad() {
+            try {
+                const docRef = doc(db, "config", "publicidad");
+                const docSnap = await getDoc(docRef);
+                if(docSnap.exists() && docSnap.data().imagenes && docSnap.data().imagenes.length > 0) {
+                    const links = docSnap.data().imagenes;
+                    const track = document.getElementById('slider-track');
+                    const dots = document.getElementById('slider-dots');
+                    
+                    document.getElementById('slider-container').style.display = 'block';
+                    document.getElementById('hero-static').style.display = 'none';
+
+                    links.forEach((link, i) => {
+                        track.innerHTML += `<div class="slider-slide"><img src="${link}" onerror="this.style.display='none'"></div>`;
+                        dots.innerHTML += `<div class="dot ${i===0?'active':''}" onclick="irSlide(${i})"></div>`;
+                    });
+                    startAutoSlide(links.length);
+                }
+            } catch(e) {}
+        }
+
+        let currentSlide = 0; let slideInterval;
+        window.irSlide = (n) => {
+            currentSlide = n;
+            const track = document.getElementById('slider-track');
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+            resetInterval();
+        }
+        function startAutoSlide(total) { slideInterval = setInterval(() => { currentSlide = (currentSlide + 1) % total; irSlide(currentSlide); }, 4000); }
+        function resetInterval() { clearInterval(slideInterval); const total = document.querySelectorAll('.slider-slide').length; if(total > 1) startAutoSlide(total); }
+
+        window.filtrar = function(cat, btn) {
             document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
-            if (btn) { btn.classList.add('active'); btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
+            if(btn) { btn.classList.add('active'); btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
             document.getElementById('buscador-tienda').value = "";
-            const titulos = { 'todos': 'Catálogo Completo', 'herramientas-electricas': 'Herramientas Eléctricas', 'herramientas-manuales': 'Herramientas Manuales', 'insumos': 'Insumos', 'accesorios': 'Accesorios' };
-            document.getElementById('titulo-seccion').innerText = titulos[cat] || 'Productos';
-            renderizar(cat === 'todos' ? inventario : inventario.filter(p => p.categoria === cat));
+            document.getElementById('menu-wrapper').classList.remove('open');
+
+            const slider = document.getElementById('slider-container');
+            const hero = document.getElementById('hero-static');
+            
+            if(cat === 'todos') {
+                if(slider.innerHTML.includes('img')) slider.style.display = 'block';
+                else hero.style.display = 'block';
+                document.getElementById('titulo-seccion').innerText = 'Catálogo General';
+                renderizar(inventario);
+            } else if (cat === 'ofertas') {
+                slider.style.display = 'none';
+                hero.style.display = 'block';
+                document.getElementById('titulo-seccion').innerText = '🔥 Ofertas Especiales';
+                
+                // LOGICA DE FILTRO OFERTAS
+                const ofertas = inventario.filter(p => {
+                    // Es oferta si tiene "esOfertaBomba" activo y NO venció
+                    if(p.esOfertaBomba && p.fechaVencimiento) {
+                        return new Date(p.fechaVencimiento) > new Date();
+                    }
+                    // O si tiene precioOriginal tachado mayor al precio normal (oferta clásica)
+                    return p.precioOriginal && p.precioOriginal > p.precio;
+                });
+
+                if(ofertas.length === 0) {
+                     document.getElementById('contenedor-productos').innerHTML = "<p style='grid-column:1/-1; text-align:center; padding:40px;'>No hay ofertas activas por el momento.</p>";
+                } else {
+                    renderizar(ofertas);
+                }
+            } else {
+                slider.style.display = 'none';
+                hero.style.display = 'block';
+                const titulos = { 'herramientas-electricas': 'Herramientas Eléctricas', 'herramientas-manuales': 'Herramientas Manuales', 'insumos': 'Insumos', 'accesorios': 'Accesorios' };
+                document.getElementById('titulo-seccion').innerText = titulos[cat] || 'Productos';
+                renderizar(inventario.filter(p => p.categoria === cat));
+            }
         }
 
         window.buscarProducto = () => {
             const query = document.getElementById('buscador-tienda').value.toLowerCase();
             document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
+            document.getElementById('slider-container').style.display = 'none';
+            document.getElementById('hero-static').style.display = 'block';
             document.getElementById('titulo-seccion').innerText = query ? `Buscando: "${query}"` : 'Catálogo Completo';
             renderizar(inventario.filter(p => (p.nombre && p.nombre.toLowerCase().includes(query)) || (p.marca && p.marca.toLowerCase().includes(query)) || (p.modelo && p.modelo.toLowerCase().includes(query))));
         }
@@ -650,32 +327,57 @@
         function renderizar(lista) {
             const cont = document.getElementById('contenedor-productos');
             cont.innerHTML = "";
-            if (lista.length === 0) { cont.innerHTML = "<p style='grid-column:1/-1; text-align:center; padding:40px; color:#777;'>No hay resultados.</p>"; return; }
+            const ahora = new Date();
 
+            if(lista.length === 0 && document.getElementById('titulo-seccion').innerText !== '🔥 Ofertas Especiales') { 
+                cont.innerHTML = "<p style='grid-column:1/-1; text-align:center; padding:40px; color:#777;'>No hay resultados.</p>"; return; 
+            }
+            
             lista.forEach((p, index) => {
                 const realIndex = inventario.findIndex(x => x.id === p.id);
-                // LÓGICA DE STOCK
-                const hayStock = p.enStock !== false; // Default true si no existe el campo
+                const hayStock = p.enStock !== false;
+                const mostrarPrecio = p.mostrarPrecio !== false;
+                
+                // LÓGICA MAESTRA DE PRECIOS
+                let precioFinal = p.precio;     // Empezamos asumiendo precio normal
+                let esBombaActiva = false;
+                let htmlExtra = "";
 
-                // 1. Definir HTML del Precio
-                let htmlPrecio = "";
-                if (hayStock) {
-                    if (p.precioOriginal && p.precioOriginal > p.precio) {
-                        htmlPrecio = `<span class="price-old">$${p.precioOriginal}</span> <span class="price">$${p.precio}</span>`;
-                    } else {
-                        htmlPrecio = `<span class="price">$${p.precio}</span>`;
+                // Verificamos si es bomba y si está activa
+                if (p.esOfertaBomba && p.fechaVencimiento) {
+                    const vencimiento = new Date(p.fechaVencimiento);
+                    if (vencimiento > ahora) {
+                        esBombaActiva = true;
+                        precioFinal = p.precioOferta; // Usamos precio oferta
+                        htmlExtra = `
+                            <div class="bomba-badge">
+                                <span>💣 TERMINA EN:</span>
+                                <span class="timer-text" data-fin="${p.fechaVencimiento}">...</span>
+                            </div>
+                        `;
                     }
-                } else {
-                    htmlPrecio = `<span class="stock-alert">CONSULTAR POR ENCARGO</span>`;
                 }
 
-                // 2. Definir Botón (Agregar o Consultar)
-                let htmlBoton = "";
-                if (hayStock) {
-                    htmlBoton = `<button class="btn-add" onclick="addCart('${p.nombre}', ${p.precio}, this)">+ Agregar</button>`;
+                let htmlPrecio = "", htmlBoton = "";
+                
+                if (hayStock && mostrarPrecio) {
+                    // Si es bomba activa, mostramos precio anterior tachado (el normal) y el nuevo
+                    if(esBombaActiva) {
+                         htmlPrecio = `<span class="price-old">$${p.precio}</span> <span class="price" style="color:#e74c3c">$${precioFinal}</span>`;
+                    } 
+                    // Si no es bomba, pero tiene precioOriginal (oferta clasica)
+                    else if(p.precioOriginal && p.precioOriginal > precioFinal) {
+                        htmlPrecio = `<span class="price-old">$${p.precioOriginal}</span> <span class="price">$${precioFinal}</span>`;
+                    } else {
+                        htmlPrecio = `<span class="price">$${precioFinal}</span>`;
+                    }
+                    htmlBoton = `<button class="btn-add" onclick="addCart('${p.nombre}', ${precioFinal}, this)">+ Agregar</button>`;
+                } else if (hayStock && !mostrarPrecio) {
+                    htmlPrecio = `<span class="stock-alert">CONSULTAR PRECIO</span>`;
+                    htmlBoton = `<button class="btn-add btn-consultar" onclick="addCart('${p.nombre}', 'Consultar', this)">AGREGAR A CONSULTA</button>`;
                 } else {
-                    // Botón para encargar via WhatsApp
-                    htmlBoton = `<button class="btn-add btn-encargo" onclick="consultarEncargo('${p.nombre}')">📅 Encargar</button>`;
+                    htmlPrecio = `<span class="stock-alert encargo">CONSULTAR POR ENCARGO</span>`;
+                    htmlBoton = `<button class="btn-add btn-consultar" onclick="addCart('${p.nombre}', 'Consultar', this)">AGREGAR A CONSULTA</button>`;
                 }
 
                 cont.innerHTML += `
@@ -687,32 +389,51 @@
                             <span class="card-cat">${p.categoria ? p.categoria.replace('-', ' ') : 'Varios'}</span>
                             <h3 onclick="verDetalle(${realIndex})">${p.nombre}</h3>
                             <div class="price-box">${htmlPrecio}</div>
+                            ${htmlExtra}
                             ${htmlBoton}
                         </div>
                     </div>
                 `;
             });
+            iniciarCuentaRegresiva();
         }
 
-        // AGREGAR AL CARRITO (Solo items con stock)
-        window.addCart = function (nombre, precio, btn) {
+        let intervaloBomba;
+        function iniciarCuentaRegresiva() {
+            if(intervaloBomba) clearInterval(intervaloBomba);
+            intervaloBomba = setInterval(() => {
+                const timers = document.querySelectorAll('.timer-text');
+                if(timers.length === 0) return;
+                const ahora = new Date().getTime();
+                timers.forEach(t => {
+                    const fin = new Date(t.getAttribute('data-fin')).getTime();
+                    const distancia = fin - ahora;
+                    if (distancia < 0) {
+                        t.innerText = "¡FINALIZADA!";
+                        t.parentElement.style.background = "#7f8c8d";
+                    } else {
+                        const h = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const m = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+                        const s = Math.floor((distancia % (1000 * 60)) / 1000);
+                        t.innerText = (h<10?"0"+h:h) + ":" + (m<10?"0"+m:m) + ":" + (s<10?"0"+s:s);
+                    }
+                });
+            }, 1000);
+        }
+
+        window.addCart = function(nombre, precio, btn) {
             carrito.push({ nombre, precio });
             localStorage.setItem('carrito_cuadrado', JSON.stringify(carrito));
             updateCartUI();
-            if (btn) {
-                const prevText = btn.innerText; btn.innerText = "¡LISTO!"; btn.style.background = "#27ae60";
-                setTimeout(() => { btn.innerText = prevText; btn.style.background = ""; }, 1000);
+            if(btn) {
+                const prevHTML = btn.innerHTML; const prevBg = btn.style.backgroundColor;
+                btn.innerHTML = "¡LISTO!"; btn.style.backgroundColor = "#27ae60";
+                setTimeout(() => { btn.innerHTML = prevHTML; btn.style.backgroundColor = prevBg; }, 1000);
             }
-            if (document.getElementById('detail-modal').style.display === 'flex') cerrarDetalle();
+            if(document.getElementById('detail-modal').style.display === 'flex') cerrarDetalle();
         }
 
-        // CONSULTAR POR ENCARGO (WhatsApp directo)
-        window.consultarEncargo = function (nombreProducto) {
-            const msg = `Hola Cuadrado SA, me interesa encargar el producto: *${nombreProducto}* que figura sin stock en la web.`;
-            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-
-        window.delCart = function (index) {
+        window.delCart = function(index) {
             carrito.splice(index, 1);
             localStorage.setItem('carrito_cuadrado', JSON.stringify(carrito));
             updateCartUI();
@@ -722,67 +443,94 @@
             document.getElementById('cart-count').innerText = carrito.length;
             const list = document.getElementById('cart-items');
             list.innerHTML = "";
-            let total = 0;
+            let total = 0; let hayConsultas = false;
+
             carrito.forEach((item, i) => {
-                total += item.precio;
+                let precioDisplay = "";
+                if (typeof item.precio === 'number') { total += item.precio; precioDisplay = `$${item.precio}`; } 
+                else { hayConsultas = true; precioDisplay = `<span style="color:#e67e22; font-weight:bold; font-size:0.8rem">A COTIZAR</span>`; }
+
                 list.innerHTML += `
                     <div class="cart-item">
-                        <div><div style="font-weight:bold; color:var(--secondary)">${item.nombre}</div><div style="font-size:0.85rem; color:#888;">$${item.precio}</div></div>
+                        <div>
+                            <div style="font-weight:bold; color:var(--secondary)">${item.nombre}</div>
+                            <div style="font-size:0.85rem; color:#888;">${precioDisplay}</div>
+                        </div>
                         <button onclick="delCart(${i})" style="color:#e74c3c; background:none; border:none; font-weight:bold; cursor:pointer;">X</button>
                     </div>`;
             });
-            if (carrito.length === 0) list.innerHTML = "<p style='text-align:center; color:#999; margin-top:20px;'>Tu pedido está vacío.</p>";
+
+            if(carrito.length === 0) list.innerHTML = "<p style='text-align:center; color:#999; margin-top:20px;'>Tu pedido está vacío.</p>";
             document.getElementById('cart-total').innerText = total;
+            document.getElementById('quote-note').style.display = hayConsultas ? 'inline' : 'none';
         }
 
         window.toggleCart = () => { const m = document.getElementById('cart-modal'); m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; updateCartUI(); }
-
+        
         window.enviarWhatsApp = () => {
-            if (carrito.length === 0) return alert("Agrega productos primero.");
-            let msg = "*PEDIDO WEB CUADRADO SA:* \n\n";
-            carrito.forEach(i => msg += `🔧 ${i.nombre} ($${i.precio})\n`);
-            msg += `\n*TOTAL: $${document.getElementById('cart-total').innerText}*`;
+            if(carrito.length === 0) return alert("Agrega productos primero.");
+            let msg = "*HOLA CUADRADO SA, QUIERO CONSULTAR ESTE PEDIDO:* \n\n";
+            let itemsPrecio = []; let itemsConsulta = []; let total = 0;
+
+            carrito.forEach(i => {
+                if (typeof i.precio === 'number') { itemsPrecio.push(`✅ ${i.nombre} ($${i.precio})`); total += i.precio; } 
+                else { itemsConsulta.push(`❓ ${i.nombre} (A COTIZAR)`); }
+            });
+
+            if(itemsPrecio.length > 0) { msg += "*--- PRODUCTOS CON PRECIO ---*\n" + itemsPrecio.join('\n') + "\n"; msg += `*SUBTOTAL: $${total}*\n\n`; }
+            if(itemsConsulta.length > 0) { msg += "*--- A COTIZAR / ENCARGAR ---*\n" + itemsConsulta.join('\n') + "\n"; }
+
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // DETALLE DE PRODUCTO
         window.verDetalle = (index) => {
-            const p = inventario[index];
-            if (!p) return;
-            const hayStock = p.enStock !== false;
+            const p = inventario[index]; if(!p) return;
+            const hayStock = p.enStock !== false; const mostrarPrecio = p.mostrarPrecio !== false;
+
+            // LÓGICA DE DETALLE (Similar a Renderizar)
+            const ahora = new Date();
+            let precioFinal = p.precio;
+            let esBombaActiva = false;
+
+            if (p.esOfertaBomba && p.fechaVencimiento) {
+                if (new Date(p.fechaVencimiento) > ahora) {
+                    esBombaActiva = true;
+                    precioFinal = p.precioOferta;
+                }
+            }
 
             document.getElementById('detail-img').src = p.imagen;
             document.getElementById('detail-title').innerText = p.nombre;
             document.getElementById('detail-desc').innerText = p.descripcion || "Sin descripción.";
             document.getElementById('detail-category').innerText = p.categoria ? p.categoria.replace('-', ' ') : '';
-
-            // Render Precio en Detalle
+            
             const priceBox = document.getElementById('detail-price-box');
-            if (hayStock) {
-                priceBox.innerHTML = `<span style="font-size: 1.5rem; font-weight: bold; color: var(--secondary);">$${p.precio}</span>`;
+            const actionContainer = document.getElementById('detail-action-container');
+
+            if (hayStock && mostrarPrecio) {
+                 if(esBombaActiva) {
+                    priceBox.innerHTML = `<span style="font-size: 1.2rem; text-decoration:line-through; color:#ccc;">$${p.precio}</span> <span style="font-size: 1.8rem; font-weight: bold; color: #e74c3c;">$${precioFinal} 🔥</span>`;
+                } else if(p.precioOriginal && p.precioOriginal > precioFinal) {
+                    priceBox.innerHTML = `<span style="font-size: 1.2rem; text-decoration:line-through; color:#ccc;">$${p.precioOriginal}</span> <span style="font-size: 1.8rem; font-weight: bold; color: var(--secondary);">$${precioFinal}</span>`;
+                } else {
+                    priceBox.innerHTML = `<span style="font-size: 1.5rem; font-weight: bold; color: var(--secondary);">$${precioFinal}</span>`;
+                }
+                actionContainer.innerHTML = `<button class="btn-add" style="width: 100%; padding: 15px; margin:0; font-size: 1rem;" onclick="addCart('${p.nombre}', ${precioFinal}, this)">AGREGAR AL PEDIDO</button>`;
             } else {
-                priceBox.innerHTML = `<span class="stock-alert" style="font-size: 1rem; padding: 5px 10px;">CONSULTAR POR ENCARGO</span>`;
+                let label = (hayStock && !mostrarPrecio) ? "CONSULTAR PRECIO" : "CONSULTAR POR ENCARGO";
+                priceBox.innerHTML = `<span class="stock-alert" style="font-size: 1rem; padding: 5px 10px; border:1px solid #3498db; color:#3498db;">${label}</span>`;
+                actionContainer.innerHTML = `<button class="btn-add btn-consultar" style="width: 100%; padding: 15px; margin:0; font-size: 1rem;" onclick="addCart('${p.nombre}', 'Consultar', this)">AGREGAR A CONSULTA</button>`;
             }
 
-            // Specs
             const specsContainer = document.getElementById('detail-specs-container');
             let tableHTML = "";
-            if (p.marca || p.modelo || p.origen || p.garantia) {
+            if(p.marca || p.modelo) {
                 tableHTML = `<div class="tech-specs-container"><div class="specs-header">Características</div><table class="specs-table">
-                    ${p.marca ? `<tr><td class="label">Marca</td><td class="value">${p.marca}</td></tr>` : ''}
-                    ${p.modelo ? `<tr><td class="label">Modelo</td><td class="value">${p.modelo}</td></tr>` : ''}
+                    ${p.marca ? `<tr><td class=\"label\">Marca</td><td class=\"value\">${p.marca}</td></tr>` : ''}
+                    ${p.modelo ? `<tr><td class=\"label\">Modelo</td><td class=\"value\">${p.modelo}</td></tr>` : ''}
                 </table></div>`;
             }
             specsContainer.innerHTML = tableHTML;
-
-            // Botón en Detalle
-            const actionContainer = document.getElementById('detail-action-container');
-            if (hayStock) {
-                actionContainer.innerHTML = `<button class="btn-add" style="width: 100%; padding: 15px; margin:0; font-size: 1rem;" onclick="addCart('${p.nombre}', ${p.precio}, this)">AGREGAR AL PEDIDO</button>`;
-            } else {
-                actionContainer.innerHTML = `<button class="btn-add btn-encargo" style="width: 100%; padding: 15px; margin:0; font-size: 1rem;" onclick="consultarEncargo('${p.nombre}')">📅 CONSULTAR DISPONIBILIDAD</button>`;
-            }
-
             document.getElementById('detail-modal').style.display = 'flex';
         }
 
@@ -795,17 +543,14 @@
                 inventario = [];
                 snap.forEach(d => {
                     const data = d.data();
-                    // MOSTRAR TODOS (incluso sin stock)
-                    if (data.disponible !== false) { // Mantengo disponible para 'borrado lógico' si quisieras
-                        inventario.push({ id: d.id, ...data });
-                    }
+                    if (data.disponible !== false) inventario.push({ id: d.id, ...data });
                 });
                 document.getElementById('loading').style.display = 'none';
                 renderizar(inventario);
                 updateCartUI();
+                cargarPublicidad();
             } catch (e) { console.error(e); document.getElementById('loading').innerText = "Error cargando."; }
         })();
     </script>
 </body>
-
 </html>
