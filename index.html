@@ -28,6 +28,8 @@
         }
 
         body { margin: 0; font-family: var(--font-body); background-color: var(--bg-color); color: var(--text-main); padding-bottom: 80px; -webkit-tap-highlight-color: transparent; }
+        
+        /* NAVBAR */
         nav { background: var(--secondary); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); padding: 5px 0; }
         .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 15px; display: flex; flex-direction: column; }
         .nav-top-row { display: flex; align-items: center; justify-content: space-between; height: 80px; }
@@ -44,10 +46,18 @@
         .menu a { text-decoration: none; color: #ecf0f1; font-size: 0.9rem; font-weight: 500; padding: 12px; border-radius: 4px; background: rgba(255,255,255,0.05); text-transform: uppercase; cursor: pointer; border: 1px solid transparent; text-align: center; display: block; }
         .menu a.active { background: var(--primary); color: white; border-color: var(--primary); }
         .menu a.btn-ofertas { background-color: var(--offer-red); color: white; font-weight: bold; box-shadow: 0 0 10px rgba(231, 76, 60, 0.4); }
-
-        .search-dock { display: flex; align-items: center; background: white; border-radius: 4px; padding: 8px 10px; margin-bottom: 10px; border: 1px solid #ddd; }
-        .search-dock input { background: transparent; border: none; color: #333; width: 100%; font-size: 1rem; margin-left: 5px; outline: none; }
         .btn-about { display: block; background: #34495e; color: #bdc3c7; }
+
+        /* BUSCADOR Y FILTRO MARCA */
+        .search-dock { display: flex; align-items: center; background: white; border-radius: 4px; padding: 5px 10px; margin-bottom: 10px; border: 1px solid #ddd; flex-wrap: wrap; gap: 5px; }
+        .search-dock span { font-size: 0.9rem; }
+        .search-dock input { background: transparent; border: none; color: #333; flex-grow: 1; font-size: 1rem; margin-left: 5px; outline: none; min-width: 120px; }
+        
+        /* Select de Marca en el Buscador */
+        .brand-select {
+            background-color: #eee; border: none; padding: 5px 10px; border-radius: 4px; 
+            font-size: 0.85rem; color: #333; cursor: pointer; outline: none; max-width: 150px;
+        }
 
         @media (min-width: 900px) {
             .nav-container { flex-direction: row; align-items: center; height: 80px; padding: 0 20px; }
@@ -57,32 +67,35 @@
             .menu { flex-direction: row; width: auto; align-items: center; }
             .menu a { padding: 8px 15px; font-size: 0.85rem; background: rgba(255,255,255,0.1); width: auto; }
             .menu a:hover { background: var(--primary); }
-            .search-dock { margin: 0 10px 0 0; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white; width: 200px;}
+            
+            .search-dock { margin: 0 10px 0 0; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white; width: auto; min-width: 300px; }
             .search-dock input { color: white; }
             .search-dock input::placeholder { color: #bdc3c7; }
+            .brand-select { background-color: rgba(255,255,255,0.2); color: white; }
+            .brand-select option { color: #333; background: white; } /* Opciones legibles */
+
             .btn-about { margin-left: auto !important; background: transparent; border: 1px solid rgba(255,255,255,0.3); }
         }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
 
-        /* ESTILO BOMBA */
-        .bomba-badge {
-            background: #e74c3c; color: white; padding: 5px; font-weight: bold;
-            text-align: center; font-size: 0.8rem; border-radius: 4px;
-            margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 5px;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-        .timer-text { font-family: monospace; font-size: 1rem; }
-
+        /* SLIDER CON FLECHAS */
         .slider-container { width: 100%; max-width: 1200px; margin: 10px auto 20px auto; border-radius: 8px; overflow: hidden; position: relative; background: #ddd; aspect-ratio: 16/7; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none; }
         .slider-track { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
         .slider-slide { min-width: 100%; height: 100%; }
         .slider-slide img { width: 100%; height: 100%; object-fit: cover; }
-        .slider-dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; }
-        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; }
+        .slider-dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 10; }
+        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: all 0.3s; }
         .dot.active { background: white; transform: scale(1.2); }
+        
+        .slider-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: background 0.3s; user-select: none; }
+        .slider-nav:hover { background: rgba(0,0,0,0.6); }
+        .prev-slide { left: 10px; }
+        .next-slide { right: 10px; }
 
+        @media (min-width: 768px) { .slider-container { aspect-ratio: 16/5; } }
+
+        /* HERO & CARDS */
         .hero { background: white; padding: 20px; border-radius: 4px; margin-bottom: 20px; border-left: 5px solid var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .hero h1 { font-family: var(--font-title); margin: 0; font-size: 1.8rem; color: var(--secondary); text-transform: uppercase;}
         .hero p { color: #7f8c8d; margin-top: 5px; font-size: 0.9rem; }
@@ -101,6 +114,11 @@
         .price-old { font-size: 0.8rem; text-decoration: line-through; color: #bdc3c7; }
         .stock-alert { color: #3498db; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; display: inline-block; }
         .stock-alert.encargo { color: var(--alert-orange); }
+
+        /* ESTILO BOMBA */
+        .bomba-badge { background: #e74c3c; color: white; padding: 5px; font-weight: bold; text-align: center; font-size: 0.8rem; border-radius: 4px; margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 5px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        .timer-text { font-family: monospace; font-size: 1rem; }
 
         .btn-add { margin-top: 10px; width: 100%; background: var(--secondary); color: white; border: none; padding: 8px; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; border-radius: 4px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .btn-consultar { background-color: #3498db; }
@@ -125,13 +143,6 @@
         .btn-whatsapp { background: var(--wa-green); }
         .cart-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center; }
 
-        @media (min-width: 768px) {
-            .detail-layout { flex-direction: row; height: auto; max-height: 80vh; }
-            .detail-img-area { width: 50%; height: auto; border-bottom: none; border-right: 1px solid #ddd; }
-            .detail-info-area { width: 50%; }
-            .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
-            .slider-container { aspect-ratio: 16/5; }
-        }
     </style>
 </head>
 <body>
@@ -147,13 +158,17 @@
                     <div class="search-dock">
                         <span style="font-size:0.9rem;">🔍</span>
                         <input type="text" id="buscador-tienda" placeholder="Buscar..." onkeyup="buscarProducto()">
+                        <select id="brand-filter" class="brand-select" onchange="buscarProducto()">
+                            <option value="">Todas las Marcas</option>
+                        </select>
                     </div>
+                    
                     <a onclick="filtrar('todos', this)" class="active">Todo</a>
-                    <a onclick="filtrar('ofertas', this)" class="btn-ofertas">🔥 Ofertas</a>
+                    <a onclick="filtrar('ofertas', this)" class="btn-ofertas">Ofertas</a>
                     <a onclick="filtrar('herramientas-electricas', this)">Eléctricas</a>
-                    <a onclick="filtrar('herramientas-manuales', this)">Manuales</a>
+                    <a onclick="filtrar('herramientas-manuales', this)">Neumaticas</a>
                     <a onclick="filtrar('insumos', this)">Insumos</a>
-                    <a onclick="filtrar('accesorios', this)">Accesorios</a>
+                    <a onclick="filtrar('accesorios', this)">herramientas-manuales</a>
                     <a href="sobrenosotros.html" class="btn-about">Sobre Nosotros</a>
                 </div>
             </div>
@@ -162,6 +177,8 @@
 
     <div class="container">
         <div id="slider-container" class="slider-container">
+            <button class="slider-nav prev-slide" onclick="moveSlide(-1)">&#10094;</button>
+            <button class="slider-nav next-slide" onclick="moveSlide(1)">&#10095;</button>
             <div id="slider-track" class="slider-track"></div>
             <div id="slider-dots" class="slider-dots"></div>
         </div>
@@ -240,6 +257,7 @@
 
         window.toggleMobileMenu = () => { document.getElementById('menu-wrapper').classList.toggle('open'); };
 
+        // --- PUBLICIDAD ---
         async function cargarPublicidad() {
             try {
                 const docRef = doc(db, "config", "publicidad");
@@ -252,6 +270,9 @@
                     document.getElementById('slider-container').style.display = 'block';
                     document.getElementById('hero-static').style.display = 'none';
 
+                    track.innerHTML = '';
+                    dots.innerHTML = '';
+
                     links.forEach((link, i) => {
                         track.innerHTML += `<div class="slider-slide"><img src="${link}" onerror="this.style.display='none'"></div>`;
                         dots.innerHTML += `<div class="dot ${i===0?'active':''}" onclick="irSlide(${i})"></div>`;
@@ -262,28 +283,81 @@
         }
 
         let currentSlide = 0; let slideInterval;
+        
+        window.moveSlide = (direction) => {
+            const total = document.querySelectorAll('.slider-slide').length;
+            if (total === 0) return;
+            currentSlide = (currentSlide + direction + total) % total;
+            actualizarVisual();
+            resetInterval();
+        }
+
         window.irSlide = (n) => {
             currentSlide = n;
+            actualizarVisual();
+            resetInterval();
+        }
+
+        function actualizarVisual() {
             const track = document.getElementById('slider-track');
             track.style.transform = `translateX(-${currentSlide * 100}%)`;
             document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
-            resetInterval();
         }
-        function startAutoSlide(total) { slideInterval = setInterval(() => { currentSlide = (currentSlide + 1) % total; irSlide(currentSlide); }, 4000); }
-        function resetInterval() { clearInterval(slideInterval); const total = document.querySelectorAll('.slider-slide').length; if(total > 1) startAutoSlide(total); }
 
+        function startAutoSlide(total) { 
+            if(slideInterval) clearInterval(slideInterval);
+            slideInterval = setInterval(() => { 
+                currentSlide = (currentSlide + 1) % total; 
+                actualizarVisual(); 
+            }, 4000); 
+        }
+        
+        function resetInterval() { 
+            clearInterval(slideInterval); 
+            const total = document.querySelectorAll('.slider-slide').length; 
+            if(total > 1) startAutoSlide(total); 
+        }
+
+        // --- CARGAR MARCAS (FILTRO) ---
+        async function cargarFiltroMarcas() {
+            try {
+                const docRef = doc(db, "config", "marcas");
+                const docSnap = await getDoc(docRef);
+                if(docSnap.exists() && docSnap.data().lista) {
+                    const marcas = docSnap.data().lista;
+                    marcas.sort((a, b) => a.nombre.localeCompare(b.nombre));
+                    const select = document.getElementById('brand-filter');
+                    
+                    marcas.forEach(m => {
+                        const opt = document.createElement('option');
+                        opt.value = m.nombre;
+                        opt.innerText = m.nombre;
+                        select.appendChild(opt);
+                    });
+                }
+            } catch(e) { console.log("Sin marcas"); }
+        }
+
+        // --- FILTROS ---
         window.filtrar = function(cat, btn) {
             document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
             if(btn) { btn.classList.add('active'); btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
+            
+            // Limpiar buscador y marca
             document.getElementById('buscador-tienda').value = "";
+            document.getElementById('brand-filter').value = "";
             document.getElementById('menu-wrapper').classList.remove('open');
 
             const slider = document.getElementById('slider-container');
             const hero = document.getElementById('hero-static');
             
             if(cat === 'todos') {
-                if(slider.innerHTML.includes('img')) slider.style.display = 'block';
-                else hero.style.display = 'block';
+                if(document.getElementById('slider-track').children.length > 0) {
+                     slider.style.display = 'block';
+                     hero.style.display = 'none';
+                } else {
+                     hero.style.display = 'block';
+                }
                 document.getElementById('titulo-seccion').innerText = 'Catálogo General';
                 renderizar(inventario);
             } else if (cat === 'ofertas') {
@@ -291,13 +365,8 @@
                 hero.style.display = 'block';
                 document.getElementById('titulo-seccion').innerText = '🔥 Ofertas Especiales';
                 
-                // LOGICA DE FILTRO OFERTAS
                 const ofertas = inventario.filter(p => {
-                    // Es oferta si tiene "esOfertaBomba" activo y NO venció
-                    if(p.esOfertaBomba && p.fechaVencimiento) {
-                        return new Date(p.fechaVencimiento) > new Date();
-                    }
-                    // O si tiene precioOriginal tachado mayor al precio normal (oferta clásica)
+                    if(p.esOfertaBomba && p.fechaVencimiento) return new Date(p.fechaVencimiento) > new Date();
                     return p.precioOriginal && p.precioOriginal > p.precio;
                 });
 
@@ -317,11 +386,30 @@
 
         window.buscarProducto = () => {
             const query = document.getElementById('buscador-tienda').value.toLowerCase();
+            const marcaSel = document.getElementById('brand-filter').value;
+
+            // Si ambos vacíos, volver a inicio
+            if(query === "" && marcaSel === "") {
+                filtrar('todos', document.querySelector('.menu a'));
+                return;
+            }
+
             document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
             document.getElementById('slider-container').style.display = 'none';
             document.getElementById('hero-static').style.display = 'block';
-            document.getElementById('titulo-seccion').innerText = query ? `Buscando: "${query}"` : 'Catálogo Completo';
-            renderizar(inventario.filter(p => (p.nombre && p.nombre.toLowerCase().includes(query)) || (p.marca && p.marca.toLowerCase().includes(query)) || (p.modelo && p.modelo.toLowerCase().includes(query))));
+            
+            let titulo = "Buscando...";
+            if(query) titulo = `Resultados para: "${query}"`;
+            if(marcaSel) titulo += ` (Marca: ${marcaSel})`;
+            document.getElementById('titulo-seccion').innerText = titulo;
+
+            const res = inventario.filter(p => {
+                const matchTexto = !query || (p.nombre && p.nombre.toLowerCase().includes(query)) || (p.modelo && p.modelo.toLowerCase().includes(query));
+                const matchMarca = !marcaSel || (p.marca === marcaSel);
+                return matchTexto && matchMarca;
+            });
+
+            renderizar(res);
         }
 
         function renderizar(lista) {
@@ -338,34 +426,24 @@
                 const hayStock = p.enStock !== false;
                 const mostrarPrecio = p.mostrarPrecio !== false;
                 
-                // LÓGICA MAESTRA DE PRECIOS
-                let precioFinal = p.precio;     // Empezamos asumiendo precio normal
+                let precioFinal = p.precio;
                 let esBombaActiva = false;
                 let htmlExtra = "";
 
-                // Verificamos si es bomba y si está activa
                 if (p.esOfertaBomba && p.fechaVencimiento) {
-                    const vencimiento = new Date(p.fechaVencimiento);
-                    if (vencimiento > ahora) {
+                    if (new Date(p.fechaVencimiento) > ahora) {
                         esBombaActiva = true;
-                        precioFinal = p.precioOferta; // Usamos precio oferta
-                        htmlExtra = `
-                            <div class="bomba-badge">
-                                <span>💣 TERMINA EN:</span>
-                                <span class="timer-text" data-fin="${p.fechaVencimiento}">...</span>
-                            </div>
-                        `;
+                        precioFinal = p.precioOferta;
+                        htmlExtra = `<div class="bomba-badge"><span>💣 TERMINA EN:</span><span class="timer-text" data-fin="${p.fechaVencimiento}">...</span></div>`;
                     }
                 }
 
                 let htmlPrecio = "", htmlBoton = "";
                 
                 if (hayStock && mostrarPrecio) {
-                    // Si es bomba activa, mostramos precio anterior tachado (el normal) y el nuevo
                     if(esBombaActiva) {
                          htmlPrecio = `<span class="price-old">$${p.precio}</span> <span class="price" style="color:#e74c3c">$${precioFinal}</span>`;
                     } 
-                    // Si no es bomba, pero tiene precioOriginal (oferta clasica)
                     else if(p.precioOriginal && p.precioOriginal > precioFinal) {
                         htmlPrecio = `<span class="price-old">$${p.precioOriginal}</span> <span class="price">$${precioFinal}</span>`;
                     } else {
@@ -487,7 +565,6 @@
             const p = inventario[index]; if(!p) return;
             const hayStock = p.enStock !== false; const mostrarPrecio = p.mostrarPrecio !== false;
 
-            // LÓGICA DE DETALLE (Similar a Renderizar)
             const ahora = new Date();
             let precioFinal = p.precio;
             let esBombaActiva = false;
@@ -549,6 +626,7 @@
                 renderizar(inventario);
                 updateCartUI();
                 cargarPublicidad();
+                cargarFiltroMarcas(); // Cargar el dropdown de marcas
             } catch (e) { console.error(e); document.getElementById('loading').innerText = "Error cargando."; }
         })();
     </script>
