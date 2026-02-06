@@ -53,7 +53,6 @@
         .search-dock span { font-size: 0.9rem; }
         .search-dock input { background: transparent; border: none; color: #333; flex-grow: 1; font-size: 1rem; margin-left: 5px; outline: none; min-width: 120px; }
         
-        /* Select de Marca en el Buscador */
         .brand-select {
             background-color: #eee; border: none; padding: 5px 10px; border-radius: 4px; 
             font-size: 0.85rem; color: #333; cursor: pointer; outline: none; max-width: 150px;
@@ -72,7 +71,7 @@
             .search-dock input { color: white; }
             .search-dock input::placeholder { color: #bdc3c7; }
             .brand-select { background-color: rgba(255,255,255,0.2); color: white; }
-            .brand-select option { color: #333; background: white; } /* Opciones legibles */
+            .brand-select option { color: #333; background: white; } 
 
             .btn-about { margin-left: auto !important; background: transparent; border: 1px solid rgba(255,255,255,0.3); }
         }
@@ -164,11 +163,11 @@
                     </div>
                     
                     <a onclick="filtrar('todos', this)" class="active">Todo</a>
-                    <a onclick="filtrar('ofertas', this)" class="btn-ofertas">Ofertas</a>
+                    <a onclick="filtrar('ofertas', this)" class="btn-ofertas">🔥 Ofertas</a>
                     <a onclick="filtrar('herramientas-electricas', this)">Eléctricas</a>
-                    <a onclick="filtrar('herramientas-manuales', this)">Neumaticas</a>
+                    <a onclick="filtrar('herramientas-manuales', this)">Manuales</a>
                     <a onclick="filtrar('insumos', this)">Insumos</a>
-                    <a onclick="filtrar('accesorios', this)">herramientas-manuales</a>
+                    <a onclick="filtrar('accesorios', this)">Accesorios</a>
                     <a href="sobrenosotros.html" class="btn-about">Sobre Nosotros</a>
                 </div>
             </div>
@@ -325,7 +324,8 @@
                 const docSnap = await getDoc(docRef);
                 if(docSnap.exists() && docSnap.data().lista) {
                     const marcas = docSnap.data().lista;
-                    marcas.sort((a, b) => a.nombre.localeCompare(b.nombre));
+                    // ORDENAR ALFABETICAMENTE
+                    marcas.sort((a, b) => a.nombre.toLowerCase().localeCompare(b.nombre.toLowerCase()));
                     const select = document.getElementById('brand-filter');
                     
                     marcas.forEach(m => {
@@ -343,7 +343,6 @@
             document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
             if(btn) { btn.classList.add('active'); btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
             
-            // Limpiar buscador y marca
             document.getElementById('buscador-tienda').value = "";
             document.getElementById('brand-filter').value = "";
             document.getElementById('menu-wrapper').classList.remove('open');
@@ -388,7 +387,6 @@
             const query = document.getElementById('buscador-tienda').value.toLowerCase();
             const marcaSel = document.getElementById('brand-filter').value;
 
-            // Si ambos vacíos, volver a inicio
             if(query === "" && marcaSel === "") {
                 filtrar('todos', document.querySelector('.menu a'));
                 return;
@@ -420,6 +418,15 @@
             if(lista.length === 0 && document.getElementById('titulo-seccion').innerText !== '🔥 Ofertas Especiales') { 
                 cont.innerHTML = "<p style='grid-column:1/-1; text-align:center; padding:40px; color:#777;'>No hay resultados.</p>"; return; 
             }
+
+            // ORDENAR POR MARCA (A-Z) Y LUEGO POR NOMBRE
+            lista.sort((a, b) => {
+                const marcaA = (a.marca || "").toLowerCase();
+                const marcaB = (b.marca || "").toLowerCase();
+                if (marcaA < marcaB) return -1;
+                if (marcaA > marcaB) return 1;
+                return (a.nombre || "").toLowerCase().localeCompare((b.nombre || "").toLowerCase());
+            });
             
             lista.forEach((p, index) => {
                 const realIndex = inventario.findIndex(x => x.id === p.id);
@@ -626,7 +633,7 @@
                 renderizar(inventario);
                 updateCartUI();
                 cargarPublicidad();
-                cargarFiltroMarcas(); // Cargar el dropdown de marcas
+                cargarFiltroMarcas(); 
             } catch (e) { console.error(e); document.getElementById('loading').innerText = "Error cargando."; }
         })();
     </script>
